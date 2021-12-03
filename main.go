@@ -2,24 +2,22 @@ package main
 
 import (
 	"fmt"
+	"io"
 	"io/ioutil"
 	"log"
 	"net/http"
+	"os"
 	"time"
 )
 
-type DATA struct {
-	Data []string `json:"data"`
-}
-
 func main() {
-	// token := "AAAAAAAAAAAAAAAAAAAAANE9WQEAAAAAZIRfcpuGktyArDC4ppNKH7YefsU%3Do9xRlDeOyxsrMBJL0mqHS2vZz14vaa5LgPmqorpzSFVImh0vL1"
+	token := os.Getenv("BEARER_TOKEN")
 	usernames := "usernames=MCChampionship_"
 	userFields := "user.fields=description,created_at,verified"
 	url := fmt.Sprintf("https://api.twitter.com/2/users/by?%s&%s", usernames, userFields)
 
 	twitterClient := http.Client{
-		Timeout: time.Second *2,
+		Timeout: time.Second * 2,
 	}
 
 	request, err := http.NewRequest(http.MethodGet, url, nil)
@@ -27,7 +25,7 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	request.Header.Set("Authorization", "AAAAAAAAAAAAAAAAAAAAANE9WQEAAAAAZIRfcpuGktyArDC4ppNKH7YefsU%3Do9xRlDeOyxsrMBJL0mqHS2vZz14vaa5LgPmqorpzSFVImh0vL1")
+	request.Header.Set("Authorization", "Bearer "+token)
 
 	request.Header.Set("User-Agent", "v2UserLookupGolang")
 
@@ -38,7 +36,12 @@ func main() {
 	}
 
 	if result.Body != nil {
-		defer result.Body.Close()
+		defer func(Body io.ReadCloser) {
+			err := Body.Close()
+			if err != nil {
+
+			}
+		}(result.Body)
 	}
 
 	test, readErr := ioutil.ReadAll(result.Body)
