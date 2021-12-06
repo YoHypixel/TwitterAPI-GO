@@ -61,7 +61,10 @@ func getMedia(TweetId string) {
 	if len(data.Includes.Media) <= 0 {
 
 	} else {
-		fmt.Println(data.Includes.Media[0].Url)
-		fmt.Println(data.Includes.Media[0].Type)
+		if data.Includes.Media[0].Type != "video" {
+			fmt.Println(data.Includes.Media[0].Url)
+			fmt.Println(data.Includes.Media[0].Type)
+		}
+
 	}
 }
