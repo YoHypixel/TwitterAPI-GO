@@ -28,6 +28,36 @@ type Tweets struct {
 	} `json:"meta"`
 }
 
+type TweetStructure struct {
+	Data []struct {
+		AuthorId        string `json:"author_id"`
+		Id              string `json:"id"`
+		InReplyToUserId string `json:"in_reply_to_user_id,omitempty"`
+		Text            string `json:"text"`
+		Lang            string `json:"lang"`
+		Attachments     struct {
+			MediaKeys []string `json:"media_keys"`
+		} `json:"attachments,omitempty"`
+	} `json:"data"`
+}
+
+type tweetMedia struct {
+	Data []struct {
+		Attachments struct {
+			MediaKeys []string `json:"media_keys"`
+		} `json:"attachments"`
+		Id   string `json:"id"`
+		Text string `json:"text"`
+	} `json:"data"`
+	Includes struct {
+		Media []struct {
+			MediaKey string `json:"media_key"`
+			Type     string `json:"type"`
+			Url      string `json:"url,omitempty"`
+		} `json:"media"`
+	} `json:"includes"`
+}
+
 func main() {
-	getTweets()
+	getAuthor()
 }
