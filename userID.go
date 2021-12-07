@@ -11,6 +11,8 @@ import (
 )
 
 func getID() string {
+	// basic setup
+
 	token := os.Getenv("BEARER_TOKEN")
 	usernames := "usernames=MCChampionship_"
 	userFields := "user.fields=description,created_at,verified"
@@ -29,7 +31,11 @@ func getID() string {
 
 	request.Header.Set("User-Agent", "v2UserLookupGolang")
 
+	// does request
+
 	result, getErr := twitterClient.Do(request)
+
+	// error checking and reading od data from request
 
 	if getErr != nil || result.StatusCode != 200 {
 		log.Fatal(result.StatusCode)
@@ -38,6 +44,9 @@ func getID() string {
 	if readErr != nil {
 		log.Fatal(readErr)
 	}
+
+	// sorts data and return ID
+
 	var data TwitterUser
 	err = json.Unmarshal(testByte, &data)
 	FinalData := data.Data[0]

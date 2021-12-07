@@ -4,6 +4,7 @@ import (
 	"time"
 )
 
+// TwitterUser struct to sort data that Twitter users havee
 type TwitterUser struct {
 	Data []struct {
 		Description string    `json:"description"`
@@ -15,6 +16,7 @@ type TwitterUser struct {
 	} `json:"data"`
 }
 
+// Tweets struct to sort through the relevant information from actual tweets
 type Tweets struct {
 	Data []struct {
 		Id   string `json:"id"`
@@ -28,6 +30,7 @@ type Tweets struct {
 	} `json:"meta"`
 }
 
+// TweetStructure struct to sort through the relevant information from actual tweets involving media such as pictures
 type TweetStructure struct {
 	Data []struct {
 		AuthorId        string `json:"author_id"`
@@ -41,6 +44,7 @@ type TweetStructure struct {
 	} `json:"data"`
 }
 
+// tweetMedia to actually sort though tweets media data
 type tweetMedia struct {
 	Data []struct {
 		Attachments struct {

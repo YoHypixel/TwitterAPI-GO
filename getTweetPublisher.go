@@ -11,6 +11,9 @@ import (
 )
 
 func getAuthor() {
+
+	// General housekeeping to get Twitter API key and sort through Ids given by the getTweets() method
+
 	token := os.Getenv("BEARER_TOKEN")
 	x := getTweets()
 
@@ -25,6 +28,8 @@ func getAuthor() {
 
 	}
 
+	// sets up what's needed for the Twitter API
+
 	tweetFields := "tweet.fields=lang,author_id,in_reply_to_user_id,attachments"
 	url := fmt.Sprintf("https://api.twitter.com/2/tweets?%s&%s", ids, tweetFields)
 
@@ -35,7 +40,6 @@ func getAuthor() {
 	request, err := http.NewRequest(http.MethodGet, url, nil)
 
 	if err != nil {
-		fmt.Println("test")
 		log.Fatal(err)
 	}
 
@@ -43,10 +47,11 @@ func getAuthor() {
 
 	request.Header.Set("User-Agent", "v2UserLookupGolang")
 
+	// Does the request and sorts it
+
 	result, getErr := twitterClient.Do(request)
 
 	if getErr != nil || result.StatusCode != 200 {
-		fmt.Println("test1")
 		fmt.Println(result.Status)
 
 		log.Fatal(result.StatusCode)
@@ -54,7 +59,6 @@ func getAuthor() {
 
 	testByte, readErr := ioutil.ReadAll(result.Body)
 	if readErr != nil {
-		fmt.Println("test2")
 
 		log.Fatal(readErr)
 	}
@@ -66,6 +70,8 @@ func getAuthor() {
 	if parseErr != nil {
 		log.Fatal(parseErr)
 	}
+
+	// uses data gathered
 
 	for x := 0; x < len(data.Data); x++ {
 		getMedia(data.Data[x].Id)

@@ -22,6 +22,8 @@ func getTweets() []string {
 
 	request, err := http.NewRequest(http.MethodGet, UrlAPI, nil)
 
+	// I don't know why it has to be different, but it is
+
 	param := url.Values{}
 	param.Add("tweet.fields", "created_at")
 
@@ -32,11 +34,15 @@ func getTweets() []string {
 
 	request.Header.Set("User-Agent", "v2UserLookupGolang")
 
+	// sends the request
+
 	result, getErr := twitterClient.Do(request)
 
 	if getErr != nil || result.StatusCode != 200 {
 		log.Fatal(result.StatusCode)
 	}
+
+	// reads the request in a not human-readable way
 
 	testByte, readErr := ioutil.ReadAll(result.Body)
 	if readErr != nil {
@@ -45,11 +51,18 @@ func getTweets() []string {
 
 	var data Tweets
 
+	// sorts data and it is human-readable too
+
 	parseErr := json.Unmarshal(testByte, &data)
 
 	if parseErr != nil {
 		log.Fatal(parseErr)
 	}
+
+	// gets the tweet ID and returns it
+
+	// Very Important for other functions
+
 	s := make([]string, 0)
 
 	for x := 0; x < len(data.Data); x++ {
